@@ -1,0 +1,230 @@
+.impact-lab {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-dark);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+}
+
+.impact-lab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: var(--panel-bg);
+    border-bottom: 1px solid var(--panel-border);
+}
+
+.impact-lab-header h1 {
+    font-size: 1.4rem;
+    color: var(--accent-red);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.back-to-space-btn {
+    padding: 10px 20px;
+    border: 1px solid var(--panel-border);
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.back-to-space-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.impact-lab-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+#impact-map {
+    flex: 1;
+    background: #1a1a2e;
+}
+
+.impact-sidebar {
+    width: 380px;
+    background: var(--panel-bg);
+    border-left: 1px solid var(--panel-border);
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.impact-sidebar h2 {
+    font-size: 1rem;
+    color: var(--accent-blue);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.impact-stats {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.impact-stat {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 16px;
+    border-radius: 10px;
+    border-left: 3px solid var(--accent-blue);
+}
+
+.impact-stat.danger {
+    border-left-color: var(--accent-red);
+}
+
+.impact-stat.warning {
+    border-left-color: var(--accent-orange);
+}
+
+.impact-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.impact-stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.damage-zones {
+    margin-bottom: 24px;
+}
+
+.zone-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.zone-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.zone-thermal {
+    background: #ff3333;
+}
+
+.zone-pressure {
+    background: #ff8833;
+}
+
+.zone-shrapnel {
+    background: #ffcc33;
+}
+
+.zone-info {
+    flex: 1;
+}
+
+.zone-name {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.zone-radius {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.infrastructure-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.infrastructure-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.infrastructure-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-right: 12px;
+    font-size: 1.1rem;
+}
+
+.infrastructure-details {
+    flex: 1;
+}
+
+.infrastructure-name {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
+
+.infrastructure-distance {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 18, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 600;
+}
+
+.loading-overlay span {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.click-prompt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--panel-bg);
+    padding: 24px 40px;
+    border-radius: 12px;
+    border: 1px solid var(--panel-border);
+    text-align: center;
+    z-index: 550;
+}
+
+.click-prompt h3 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.click-prompt p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="3D visualization of Near-Earth Objects with impact simulation">
+    <title>NEO Collision Engine</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/impact-lab.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <div id="scene-container"></div>
+
+    <div id="dashboard" class="dashboard hidden">
+        <button id="close-dashboard" class="close-btn">X</button>
+        <h2 id="neo-name">--</h2>
+        <div class="stat-grid">
+            <div class="stat-item">
+                <span class="stat-label">Diameter</span>
+                <span id="neo-diameter" class="stat-value">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Miss Distance</span>
+                <span id="neo-distance" class="stat-value">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Velocity</span>
+                <span id="neo-velocity" class="stat-value">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Hazardous</span>
+                <span id="neo-hazardous" class="stat-value">--</span>
+            </div>
+        </div>
+
+        <div class="slider-section">
+            <label for="velocity-slider">Velocity Override (km/s)</label>
+            <input type="range" id="velocity-slider" min="1" max="100" value="20">
+            <span id="velocity-display">20 km/s</span>
+        </div>
+
+        <div class="energy-section">
+            <div class="energy-label">Kinetic Energy</div>
+            <div id="kinetic-energy" class="energy-value">--</div>
+            <div id="energy-comparison" class="energy-comparison">--</div>
+        </div>
+
+        <button id="simulate-impact" class="impact-btn">Simulate Impact</button>
+    </div>
+
+    <div id="impact-report" class="impact-report hidden">
+        <h2>Impact Assessment Report</h2>
+        <div class="report-grid">
+            <div class="report-item">
+                <span class="report-label">Crater Diameter</span>
+                <span id="crater-size" class="report-value">--</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Earthquake Magnitude</span>
+                <span id="earthquake-mag" class="report-value">--</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Destruction Radius</span>
+                <span id="destruction-radius" class="report-value">--</span>
+            </div>
+        </div>
+        <div id="benchmark-comparison" class="benchmark">--</div>
+        <button id="close-report" class="close-report-btn">Close</button>
+        <button id="open-impact-lab" class="impact-lab-btn">Open Impact Lab</button>
+    </div>
+
+    <div id="loading" class="loading">Loading NEO Data...</div>
+
+    <div id="time-control" class="time-control">
+        <div class="time-header">
+            <span class="time-label">Time Control</span>
+            <span id="time-speed-display">1.0x</span>
+        </div>
+        <input type="range" id="time-slider" min="0" max="200" value="100">
+        <div class="time-buttons">
+            <button id="time-pause" class="time-btn">Pause</button>
+            <button id="time-reset" class="time-btn">Reset</button>
+        </div>
+    </div>
+
+    <div id="controls-hint" class="controls-hint">
+        Left-click + drag to rotate | Scroll to zoom | Click meteorite for details
+    </div>
+
+    <!-- Impact Lab View -->
+    <div id="impact-lab" class="impact-lab hidden">
+        <div class="impact-lab-header">
+            <h1>Impact Lab</h1>
+            <button id="back-to-space" class="back-to-space-btn">Back to Space View</button>
+        </div>
+        <div class="impact-lab-content">
+            <div id="impact-map"></div>
+            <div class="impact-sidebar">
+                <h2>Impact Data</h2>
+                <div class="impact-stats">
+                    <div class="impact-stat">
+                        <div class="impact-stat-label">Meteorite</div>
+                        <div id="impact-meteor-name" class="impact-stat-value">--</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-stat-label">Impact Velocity</div>
+                        <div id="impact-velocity" class="impact-stat-value">--</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-stat-label">Kinetic Energy</div>
+                        <div id="impact-energy" class="impact-stat-value">--</div>
+                    </div>
+                </div>
+
+                <h2>Damage Zones</h2>
+                <div class="damage-zones">
+                    <div class="zone-item">
+                        <div class="zone-color zone-thermal"></div>
+                        <div class="zone-info">
+                            <div class="zone-name">Thermal Zone</div>
+                            <div id="thermal-radius" class="zone-radius">--</div>
+                        </div>
+                    </div>
+                    <div class="zone-item">
+                        <div class="zone-color zone-pressure"></div>
+                        <div class="zone-info">
+                            <div class="zone-name">Pressure Wave</div>
+                            <div id="pressure-radius" class="zone-radius">--</div>
+                        </div>
+                    </div>
+                    <div class="zone-item">
+                        <div class="zone-color zone-shrapnel"></div>
+                        <div class="zone-info">
+                            <div class="zone-name">Shrapnel Zone</div>
+                            <div id="shrapnel-radius" class="zone-radius">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Affected Infrastructure <span
+                        style="font-size:0.7rem;color:var(--text-secondary);font-weight:normal">(estimated from
+                        available data)</span></h2>
+                <div class="impact-stats">
+                    <div class="impact-stat danger">
+                        <div class="impact-stat-label">Clinics</div>
+                        <div id="hospitals-count" class="impact-stat-value">--</div>
+                    </div>
+                    <div class="impact-stat warning">
+                        <div class="impact-stat-label">Schools</div>
+                        <div id="schools-count" class="impact-stat-value">--</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-stat-label">Industrial Sites</div>
+                        <div id="industrial-count" class="impact-stat-value">--</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-stat-label">Farmland</div>
+                        <div id="farmland-count" class="impact-stat-value">--</div>
+                    </div>
+                </div>
+
+                <h2>Facilities</h2>
+                <div id="infrastructure-list" class="infrastructure-list"></div>
+            </div>
+        </div>
+
+        <div id="click-prompt" class="click-prompt hidden">
+            <h3>Select Impact Location</h3>
+            <p>Click anywhere on the map to set the impact point</p>
+        </div>
+
+        <div id="impact-loading" class="loading-overlay hidden">
+            <span>Querying infrastructure data...</span>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
