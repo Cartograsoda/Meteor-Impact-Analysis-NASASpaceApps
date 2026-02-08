@@ -251,7 +251,9 @@ tldr: you may do whatever you want with our part of code, for api's and librarie
 ## Acknowledgments
 
 - **NASA NeoWS API** - Near-Earth Object data
-- **OpenStreetMap & Overpass API** - Geospatial infrastructure data
+- **OpenStreetMap & Overpass API** -<img width="964" height="645" alt="nasa1" src="https://github.com/user-attachments/assets/e39d98db-c69c-442e-b003-6bdfbde6f737" />
+ Geospatial infrastructure data
 - **Three.js** - WebGL rendering
 - **Leaflet.js** - Interactive maps
-- **Spring Boot** - Backend framework
+- **Spring Boot** - Backend framework<img width="1199" height="547" alt="nasa2" src="https://github.com/user-attachments/assets/015e767a-b466-4a69-b395-5231916f833b" />
+
